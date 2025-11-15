@@ -1,0 +1,15 @@
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/CrudUsuarioApplication.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/config/SecurityConfig.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/controller/UsuarioController.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/dto/LoginDTO.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/dto/UsuarioCadastroDTO.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/dto/UsuarioResponseDTO.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/dto/UsuarioUpdateDTO.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/model/Usuario.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/repository/UsuarioRepository.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/service/AutenticacaoService.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/service/UsuarioService.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/controller/ProjetoController.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/model/Projeto.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/repository/ProjetoRepository.java
+/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/service/ProjetoService.java
