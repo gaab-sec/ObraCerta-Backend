@@ -88,6 +88,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/usuarios/cadastro").permitAll()
                 .requestMatchers("/api/usuarios/login").permitAll()
                 .requestMatchers("/api/projetos").permitAll()
+                .requestMatchers("/api/projetos/**").permitAll()
                 .anyRequest().authenticated() 
             )
             
