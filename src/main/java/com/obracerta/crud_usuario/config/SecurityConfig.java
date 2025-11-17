@@ -86,6 +86,7 @@ public class SecurityConfig {
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/api/usuarios/cadastro").permitAll()
                 .requestMatchers("/api/usuarios/login").permitAll()
+                .requestMatchers("/api/projetos").permitAll()
                 .anyRequest().authenticated() 
             )
             
