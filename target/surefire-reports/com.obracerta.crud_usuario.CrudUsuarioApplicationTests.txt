@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.obracerta.crud_usuario.CrudUsuarioApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.01 s -- in com.obracerta.crud_usuario.CrudUsuarioApplicationTests
