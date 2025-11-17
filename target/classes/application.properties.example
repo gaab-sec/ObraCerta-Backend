@@ -1,0 +1,12 @@
+# Configuração do H2 Database
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# Configuração do Datasource (JPA)
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password= # <-- DEIXE A SENHA EM BRANCO AQUI
+
+# ... (o resto das suas configs) ...
+logging.level.org.springframework.security=DEBUG
