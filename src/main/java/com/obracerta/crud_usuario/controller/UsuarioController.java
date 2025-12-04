@@ -1,6 +1,7 @@
 package com.obracerta.crud_usuario.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 
 import org.springframework.security.core.context.SecurityContextHolder; // <-- ADICIONE ESTE IMPORT
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -87,6 +89,22 @@ public class UsuarioController {
             Usuario usuarioAtualizado = usuarioService.atualizar(id, dto);
             return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
         } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> atualizarParcialmenteUsuario(@PathVariable Long id, 
+                                                          @RequestBody Map<String, Object> updates) {
+        try {
+            // Chama o service para aplicar as atualizações parciais
+            Usuario usuarioAtualizado = usuarioService.atualizarParcialmente(id, updates);
+            return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            // Exceção comum quando o ID não é encontrado
+            return new ResponseEntity<>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+        } catch (RuntimeException e) {
+            // Captura outras exceções (como validações)
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
