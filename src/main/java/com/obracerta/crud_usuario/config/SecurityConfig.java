@@ -90,6 +90,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/usuarios/login").permitAll()
                 .requestMatchers("/api/projetos").permitAll()
                 .requestMatchers("/api/projetos/**").permitAll()
+                .requestMatchers("/api/calculadora").permitAll()
                 .anyRequest().authenticated() 
             )
             
