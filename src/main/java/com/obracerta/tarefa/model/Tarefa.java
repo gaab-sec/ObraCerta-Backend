@@ -2,7 +2,7 @@ package com.obracerta.tarefa.model;
 
 import com.obracerta.projeto.model.Projeto;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference; // Novo import
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tarefas")
@@ -12,9 +12,9 @@ public class Tarefa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "projeto_id", nullable = false) 
-    @JsonBackReference 
+    @JsonIgnore 
     private Projeto projeto; 
 
     private String nome;
