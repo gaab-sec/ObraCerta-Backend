@@ -89,7 +89,12 @@ public class SecurityConfig {
             )
             
             // 4. Configuração do H2 (Correta)
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+            .headers(headers -> headers
+                .contentSecurityPolicy(csp -> csp
+                    // Define a política que permite conexões para a sua API Render
+                    .policyDirectives("connect-src 'self' https://obracerta-api.onrender.com; default-src 'self'")
+                )
+            );
 
         return http.build();
     }
