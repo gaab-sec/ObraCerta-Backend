@@ -27,7 +27,7 @@ public class ProjetoController {
             Projeto novoProjeto = projetoService.criarProjeto(projeto);
             return ResponseEntity.ok(novoProjeto);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao criar projeto: ", e.getMessage());
+            return ResponseEntity.badRequest().body("Erro ao criar projeto: "+ e.getMessage());
         } 
     }
 
