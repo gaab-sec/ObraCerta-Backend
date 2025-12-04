@@ -2,6 +2,7 @@ package com.obracerta.tarefa.model;
 
 import com.obracerta.projeto.model.Projeto;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference; // Novo import
 
 @Entity
 @Table(name = "tarefas")
@@ -13,6 +14,7 @@ public class Tarefa {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projeto_id", nullable = false) 
+    @JsonBackReference 
     private Projeto projeto; 
 
     private String nome;

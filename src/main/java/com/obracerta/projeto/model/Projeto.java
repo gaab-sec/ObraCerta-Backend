@@ -3,6 +3,7 @@ package com.obracerta.projeto.model;
 import com.obracerta.tarefa.model.Tarefa;
 import jakarta.persistence.*;
 import java.util.List; 
+import com.fasterxml.jackson.annotation.JsonManagedReference; 
 
 @Entity
 @Table(name = "projetos")
@@ -21,6 +22,7 @@ public class Projeto {
     private Integer progresso;
 
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Tarefa> tarefas;
 
     public Projeto() {
