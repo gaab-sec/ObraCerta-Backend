@@ -85,8 +85,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/api/usuarios").permitAll()
-                .requestMatchers("/api/usuarios/login").permitAll()
+                .requestMatchers("/api/usuarios/*").permitAll()
                 .requestMatchers("/api/usuarios/**").permitAll()
+                .requestMatchers("/api/usuarios/login").permitAll()
                 .requestMatchers("/api/projetos").permitAll()
                 .requestMatchers("/api/projetos/**").permitAll()
                 .anyRequest().authenticated() 
