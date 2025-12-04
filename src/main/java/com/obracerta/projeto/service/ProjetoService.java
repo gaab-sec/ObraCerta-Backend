@@ -2,6 +2,8 @@ package com.obracerta.projeto.service;
 
 import com.obracerta.projeto.model.Projeto;
 import com.obracerta.projeto.repository.ProjetoRepository;
+import com.obracerta.tarefa.model.Tarefa; 
+import com.obracerta.tarefa.repository.TarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ public class ProjetoService {
 
     @Autowired
     private ProjetoRepository projetoRepository;
+
+    @Autowired
+    private TarefaRepository tarefaRepository;
 
     // Criar
     public Projeto criarProjeto(Projeto projeto) {
@@ -46,5 +51,22 @@ public class ProjetoService {
         Projeto projeto = projetoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Projeto não encontrado com id: " + id));
         projetoRepository.delete(projeto);
+    }
+
+    public void recalcularProgresso(Long projetoId) {
+        Projeto projeto = projetoRepository.findById(projetoId)
+            .orElseThrow(() -> new RuntimeException("Projeto não encontrado com id: " + projetoId));
+
+        // Busca todas as tarefas associadas a este projeto
+        List<Tarefa> tarefas = tarefaRepository.findByProjetoId(projetoId);
+
+        // Calcula a soma total da 'quantidadeFeita'
+        int progressoCalculado = tarefas.stream()
+            .mapToInt(Tarefa::getQuantidadeFeita)
+            .sum();
+
+        // Atualiza o campo 'progresso'
+        projeto.setProgresso(progressoCalculado);
+        projetoRepository.save(projeto);
     }
 }
