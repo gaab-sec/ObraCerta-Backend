@@ -10,7 +10,6 @@ public class TarefaResponseDTO {
     private String prioridade;
     private Long projetoId;
 
-    private ProjetoSimplesDTO projeto;
     public TarefaResponseDTO(Tarefa tarefa) {
         this.id = tarefa.getId();
         this.nome = tarefa.getNome();
