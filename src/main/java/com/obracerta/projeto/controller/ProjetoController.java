@@ -18,8 +18,17 @@ public class ProjetoController {
 
     // Endpoint para criar
     @PostMapping
-    public Projeto criarProjeto(@RequestBody Projeto projeto) {
-        return projetoService.criarProjeto(projeto);
+    public ResponseEntity<?> criarProjeto(@RequestBody Projeto projeto) {
+        try {
+            if (projeto.getUsuario() == null || projeto.getUsuario().getId() == null) {
+                return ResponseEntity.badRequest().body("Erro: O projeto precisa ter um usuário dono vinculado.");
+            }
+
+            Projeto novoProjeto = projetoService.criarProjeto(projeto);
+            return ResponseEntity.ok(novoProjeto);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao criar projeto: ", e.getMessage());
+        } 
     }
 
     // Endpoint para listar td

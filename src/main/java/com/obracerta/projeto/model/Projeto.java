@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "projetos")
 public class Projeto {
@@ -30,6 +32,8 @@ public class Projeto {
     @ManyToOne
     @JoinColumn(name= "usuario_id", nullable = false)
     private Usuario usuario;
+
+    // TODO: colaboradores do projeto
 
     public Projeto() {
     }
