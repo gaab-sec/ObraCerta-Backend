@@ -84,15 +84,7 @@ public class SecurityConfig {
             // 3. Suas regras de permissão (Corretas)
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/api/usuarios").permitAll()
-                .requestMatchers("/api/usuarios/*").permitAll()
-                .requestMatchers("/api/usuarios/**").permitAll()
-                .requestMatchers("/api/usuarios/login").permitAll()
-                .requestMatchers("/api/projetos").permitAll()
-                .requestMatchers("/api/projetos/**").permitAll()
-                .requestMatchers("/api/calculadora").permitAll()
-                .requestMatchers("/api/tarefas").permitAll()
-                .requestMatchers("/api/tarefas/**").permitAll()
+                .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated() 
             )
             
