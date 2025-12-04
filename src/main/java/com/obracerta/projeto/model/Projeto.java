@@ -1,10 +1,15 @@
 package com.obracerta.projeto.model;
 
+import com.obracerta.crud_usuario.model.Usuario;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,6 +27,10 @@ public class Projeto {
     private String descricao;
 
     private Integer progresso;
+
+    @ManyToOne
+    @JoinColumn(name= "usuario_id", nullable = false)
+    private Usuario usuario;
 
     public Projeto() {
     }
@@ -57,5 +66,13 @@ public class Projeto {
 
     public void setProgresso(Integer progresso) {
         this.progresso = progresso;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
