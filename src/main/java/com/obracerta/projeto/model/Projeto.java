@@ -1,11 +1,9 @@
 package com.obracerta.projeto.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.obracerta.tarefa.model.Tarefa;
+import jakarta.persistence.*;
+import java.util.List; 
+import com.fasterxml.jackson.annotation.JsonManagedReference; 
 
 @Entity
 @Table(name = "projetos")
@@ -22,6 +20,10 @@ public class Projeto {
     private String descricao;
 
     private Integer progresso;
+
+    @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Tarefa> tarefas;
 
     public Projeto() {
     }
@@ -58,4 +60,7 @@ public class Projeto {
     public void setProgresso(Integer progresso) {
         this.progresso = progresso;
     }
+
+    public List<Tarefa> getTarefas() { return tarefas; }
+    public void setTarefas(List<Tarefa> tarefas) { this.tarefas = tarefas; }
 }

@@ -1,6 +1,8 @@
 package com.obracerta.crud_usuario.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 
 import org.springframework.security.core.context.SecurityContextHolder; // <-- ADICIONE ESTE IMPORT
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -62,22 +65,20 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO dto, HttpServletRequest request) {
         try {
-            // 1. Precisamos criar o token de autenticação
             var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.senha());
 
-            // 2. ESTA LINHA É ESSENCIAL! Ela faz o login.
             Authentication auth = authenticationManager.authenticate(usernamePassword); 
 
-            // 3. Agora, usamos a 'auth' que acabamos de conseguir:
             var context = SecurityContextHolder.createEmptyContext(); 
             context.setAuthentication(auth); 
             request.getSession(true).setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
-            // 4. ESTA É A RESPOSTA DE SUCESSO!
-            return new ResponseEntity<>("Login realizado com sucesso!", HttpStatus.OK);
+            Usuario usuarioLogado = (Usuario) auth.getPrincipal();
+            UsuarioResponseDTO resposta = new UsuarioResponseDTO(usuarioLogado);
+
+            return ResponseEntity.ok(resposta);
 
         } catch (AuthenticationException e) {
-            // 5. O CATCH PRECISA ESTAR AQUI para pegar senhas erradas
             return new ResponseEntity<>("Credenciais inválidas", HttpStatus.UNAUTHORIZED); 
         }
     }
