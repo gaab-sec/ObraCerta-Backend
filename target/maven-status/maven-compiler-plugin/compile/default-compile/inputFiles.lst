@@ -9,13 +9,7 @@
 /home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/repository/UsuarioRepository.java
 /home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/service/AutenticacaoService.java
 /home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/crud_usuario/service/UsuarioService.java
-/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/controller/CalculadoraController.java
 /home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/controller/ProjetoController.java
-/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/dto/CalculoRequestDTO.java
-/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/dto/CalculoResponseDTO.java
-/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/model/Calculo.java
 /home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/model/Projeto.java
-/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/repository/CalculoRepository.java
 /home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/repository/ProjetoRepository.java
-/home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/service/CalculadoraService.java
 /home/yokai/Documentos/Study/Faculdade/ObraCerta-Backend/src/main/java/com/obracerta/projeto/service/ProjetoService.java
