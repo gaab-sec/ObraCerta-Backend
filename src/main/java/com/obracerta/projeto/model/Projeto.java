@@ -19,7 +19,7 @@ public class Projeto {
     @Column(length = 1000) 
     private String descricao;
 
-    private Integer progresso;
+    private double progressoGeral = 0.0;
 
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -53,12 +53,11 @@ public class Projeto {
         this.descricao = descricao;
     }
 
-    public Integer getProgresso() {
-        return progresso;
+    public double getProgressoGeral() { 
+        return progressoGeral; 
     }
-
-    public void setProgresso(Integer progresso) {
-        this.progresso = progresso;
+    public void setProgressoGeral(double progressoGeral) { 
+        this.progressoGeral = progressoGeral; 
     }
 
     public List<Tarefa> getTarefas() { return tarefas; }

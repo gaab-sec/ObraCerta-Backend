@@ -27,6 +27,10 @@ public class TarefaService {
     private ProjetoService projetoService; // Injeção para recalcular o progresso
 
     public Tarefa criarTarefa(TarefaRequestDTO dto) {
+        if (dto.getQuantidadeTotal() <= 0) {
+            throw new IllegalArgumentException("A quantidade total de itens deve ser maior que zero.");
+        }
+
         Projeto projeto = projetoRepository.findById(dto.getProjetoId())
             .orElseThrow(() -> new RuntimeException("Projeto não encontrado com ID: " + dto.getProjetoId()));
 
@@ -35,7 +39,8 @@ public class TarefaService {
         novaTarefa.setProjeto(projeto); 
         novaTarefa.setNome(dto.getNome());
         novaTarefa.setItensAFazer(dto.getItensAFazer());
-        novaTarefa.setQuantidadeFeita(0); // Inicia em 0
+        novaTarefa.setQuantidadeTotal(dto.getQuantidadeTotal()); 
+        novaTarefa.setQuantidadeFeita(0);
         novaTarefa.setPrioridade(Prioridade.valueOf(dto.getPrioridade().toUpperCase()));
         
         Tarefa tarefaSalva = tarefaRepository.save(novaTarefa);
@@ -60,8 +65,8 @@ public class TarefaService {
         Tarefa tarefa = tarefaRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Tarefa não encontrada com ID: " + id));
 
-        if (novaQuantidade < 0) {
-             throw new IllegalArgumentException("A quantidade feita não pode ser negativa.");
+        if (novaQuantidade < 0 || novaQuantidade > tarefa.getQuantidadeTotal()) {
+            throw new IllegalArgumentException("A quantidade feita deve ser entre 0 e " + tarefa.getQuantidadeTotal() + ".");
         }
         
         tarefa.setQuantidadeFeita(novaQuantidade);

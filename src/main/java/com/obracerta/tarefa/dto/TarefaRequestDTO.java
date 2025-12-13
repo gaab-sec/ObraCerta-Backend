@@ -5,6 +5,7 @@ public class TarefaRequestDTO {
     private String itensAFazer;
     private String prioridade;
     private Long projetoId;
+    private int quantidadeTotal;
 
     // Getters e Setters
     public String getNome() { return nome; }
@@ -15,4 +16,6 @@ public class TarefaRequestDTO {
     public void setPrioridade(String prioridade) { this.prioridade = prioridade; }
     public Long getProjetoId() { return projetoId; }
     public void setProjetoId(Long projetoId) { this.projetoId = projetoId; }
+    public int getQuantidadeTotal() { return quantidadeTotal; }
+    public void setQuantidadeTotal(int quantidadeTotal) { this.quantidadeTotal = quantidadeTotal; }
 }

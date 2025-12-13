@@ -41,7 +41,6 @@ public class ProjetoService {
 
         projeto.setTitulo(detalhesProjeto.getTitulo());
         projeto.setDescricao(detalhesProjeto.getDescricao());
-        projeto.setProgresso(detalhesProjeto.getProgresso());
 
         return projetoRepository.save(projeto);
     }
@@ -60,13 +59,22 @@ public class ProjetoService {
         // Busca todas as tarefas associadas a este projeto
         List<Tarefa> tarefas = tarefaRepository.findByProjetoId(projetoId);
 
+        long totalFeito = tarefas.stream()
+            .mapToLong(Tarefa::getQuantidadeFeita)
+            .sum();
+
         // Calcula a soma total da 'quantidadeFeita'
-        int progressoCalculado = tarefas.stream()
+        long totalGeral = tarefas.stream()
             .mapToInt(Tarefa::getQuantidadeFeita)
             .sum();
 
+        double novoProgresso = 0.0;
+
+        if (totalGeral > 0) {
+             novoProgresso = ((double) totalFeito / totalGeral) * 100.0;
+        }
         // Atualiza o campo 'progresso'
-        projeto.setProgresso(progressoCalculado);
+        projeto.setProgressoGeral(novoProgresso);
         projetoRepository.save(projeto);
     }
 }
