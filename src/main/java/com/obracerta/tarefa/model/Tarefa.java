@@ -24,8 +24,6 @@ public class Tarefa {
 
     private int quantidadeFeita = 0; // Inicia em 0
 
-    private int quantidadeTotal;
-
     @Enumerated(EnumType.STRING)
     private Prioridade prioridade;
 
@@ -45,6 +43,4 @@ public class Tarefa {
     public void setQuantidadeFeita(int quantidadeFeita) { this.quantidadeFeita = quantidadeFeita; }
     public Prioridade getPrioridade() { return prioridade; }
     public void setPrioridade(Prioridade prioridade) { this.prioridade = prioridade; }
-    public int getQuantidadeTotal() { return quantidadeTotal; }
-    public void setQuantidadeTotal(int quantidadeTotal) { this.quantidadeTotal = quantidadeTotal; }
 }
