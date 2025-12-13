@@ -2,7 +2,6 @@ package com.obracerta.crud_usuario.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 // Adicione as importações necessárias para o CORS
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -84,7 +83,6 @@ public class SecurityConfig {
             
             // 3. Suas regras de permissão (Corretas)
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/projetos").permitAll()
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated() 
