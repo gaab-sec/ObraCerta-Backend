@@ -27,6 +27,10 @@ public class TarefaService {
     private ProjetoService projetoService; // Injeção para recalcular o progresso
 
     public Tarefa criarTarefa(TarefaRequestDTO dto) {
+        if (dto.getItensAFazer() <= 0) {
+            throw new IllegalArgumentException("O total de itens a fazer deve ser maior que zero.");
+        }
+
         Projeto projeto = projetoRepository.findById(dto.getProjetoId())
             .orElseThrow(() -> new RuntimeException("Projeto não encontrado com ID: " + dto.getProjetoId()));
 
@@ -48,7 +52,7 @@ public class TarefaService {
     
     public List<TarefaResponseDTO> listarTarefasPorProjeto(Long projetoId) {
         if (!projetoRepository.existsById(projetoId)) {
-             throw new RuntimeException("Projeto não encontrado com ID: " + projetoId);
+            throw new RuntimeException("Projeto não encontrado com ID: " + projetoId);
         }
         
         return tarefaRepository.findByProjetoId(projetoId).stream()
@@ -61,7 +65,14 @@ public class TarefaService {
             .orElseThrow(() -> new RuntimeException("Tarefa não encontrada com ID: " + id));
 
         if (novaQuantidade < 0) {
-             throw new IllegalArgumentException("A quantidade feita não pode ser negativa.");
+            throw new IllegalArgumentException("A quantidade feita não pode ser negativa.");
+        }
+
+        if (novaQuantidade > tarefa.getItensAFazer()) {
+            throw new IllegalArgumentException(
+                "A quantidade feita (" + novaQuantidade + 
+                ") Não pode exceder o total de itens (" + tarefa.getItensAFazer() + ")."
+            );
         }
         
         tarefa.setQuantidadeFeita(novaQuantidade);

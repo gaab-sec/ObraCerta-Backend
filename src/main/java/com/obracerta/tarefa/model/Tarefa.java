@@ -19,8 +19,8 @@ public class Tarefa {
 
     private String nome;
 
-    @Column(length = 500)
-    private String itensAFazer; 
+    @Column
+    private int itensAFazer; 
 
     private int quantidadeFeita = 0; // Inicia em 0
 
@@ -37,8 +37,8 @@ public class Tarefa {
     public void setProjeto(Projeto projeto) { this.projeto = projeto; }
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
-    public String getItensAFazer() { return itensAFazer; }
-    public void setItensAFazer(String itensAFazer) { this.itensAFazer = itensAFazer; }
+    public int getItensAFazer() { return itensAFazer; }
+    public void setItensAFazer(int itensAFazer) { this.itensAFazer = itensAFazer; }
     public int getQuantidadeFeita() { return quantidadeFeita; }
     public void setQuantidadeFeita(int quantidadeFeita) { this.quantidadeFeita = quantidadeFeita; }
     public Prioridade getPrioridade() { return prioridade; }
