@@ -38,25 +38,19 @@ public class SecurityConfig {
     // NOVO MÉTODO: Configuração do CORS
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        // Crie uma nova configuração CORS
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Permite todas as origens para testes. 
-        // Em produção, você deve listar origens específicas (ex: "http://localhost:3000", "https://seu-dominio.com")
-        configuration.setAllowedOrigins(List.of("*"));
+        // ALTERAÇÃO 1: Usar setAllowedOriginPatterns em vez de setAllowedOrigins
+        // Isso permite que qualquer origem acesse, mas ainda aceita credenciais (Cookies)
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); 
         
-        // Permite todos os métodos HTTP (GET, POST, PUT, DELETE, etc.)
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         
-        // Permite todos os cabeçalhos
-        configuration.setAllowedHeaders(List.of("*"));
-        
-        // Permite o envio de credenciais (cookies, headers de autenticação, etc.).
-        // Se você usar List.of("*") em AllowedOrigins, isso deve ser false. 
-        // Se você listar origens específicas, isso pode ser true.
-        configuration.setAllowCredentials(false); 
+        // ALTERAÇÃO 2: ISSO É OBRIGATÓRIO PARA O LOGIN MANTER A SESSÃO
+        // Se estiver false, o navegador ignora o cookie de login.
+        configuration.setAllowCredentials(true); 
 
-        // Defina a configuração para todos os caminhos
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         
