@@ -40,15 +40,21 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // ALTERAÇÃO 1: Usar setAllowedOriginPatterns em vez de setAllowedOrigins
-        // Isso permite que qualquer origem acesse, mas ainda aceita credenciais (Cookies)
-        configuration.setAllowedOriginPatterns(Arrays.asList("*")); 
+        // AQUI ESTÁ O SEGREDO:
+        // Remova o AllowedOriginPatterns("*") e use AllowedOrigins com o link REAL.
+        // Adicione também o localhost para você conseguir testar na sua máquina.
+        configuration.setAllowedOrigins(Arrays.asList(
+            "https://obra-certa.vercel.app", 
+            "http://127.0.0.1:5500",
+            "http://localhost:5500"
+        ));
         
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
+        
+        // Permite todos os headers
         configuration.setAllowedHeaders(Arrays.asList("*"));
         
-        // ALTERAÇÃO 2: ISSO É OBRIGATÓRIO PARA O LOGIN MANTER A SESSÃO
-        // Se estiver false, o navegador ignora o cookie de login.
+        // Permite salvar o Cookie de Login (ESSENCIAL)
         configuration.setAllowCredentials(true); 
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
