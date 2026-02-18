@@ -1,15 +1,17 @@
 package com.obracerta.crud_usuario.service;
 
+import com.obracerta.crud_usuario.dto.ProjetoDTO;
 import com.obracerta.crud_usuario.model.Projeto;
-import com.obracerta.crud_usuario.model.Tarefa;
+import com.obracerta.crud_usuario.model.Tarefa; // Importante
+import com.obracerta.crud_usuario.model.Usuario;
 import com.obracerta.crud_usuario.repository.ProjetoRepository;
-import com.obracerta.crud_usuario.repository.TarefaRepository;
-
+import com.obracerta.crud_usuario.repository.TarefaRepository; // Importante
+import com.obracerta.crud_usuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjetoService {
@@ -18,56 +20,97 @@ public class ProjetoService {
     private ProjetoRepository projetoRepository;
 
     @Autowired
-    private TarefaRepository tarefaRepository;
+    private UsuarioRepository usuarioRepository;
 
-    // Criar
-    public Projeto criarProjeto(Projeto projeto) {
-        return projetoRepository.save(projeto);
+    // --- A CORREÇÃO ESTÁ AQUI ---
+    @Autowired
+    private TarefaRepository tarefaRepository; 
+    // -----------------------------
+
+    public List<ProjetoDTO> listarTodos() {
+        return projetoRepository.findAll().stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
 
-    // Listar todos
-    public List<Projeto> listarTodosProjetos() {
-        return projetoRepository.findAll();
+    public ProjetoDTO criar(ProjetoDTO dto) {
+        Projeto projeto = new Projeto();
+        projeto.setTitulo(dto.titulo());
+        projeto.setDescricao(dto.descricao());
+        projeto.setProgresso(dto.progresso() != null ? dto.progresso() : 0);
+
+        if (dto.usuarioId() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + dto.usuarioId()));
+            projeto.setUsuario(usuario);
+        }
+
+        Projeto salvo = projetoRepository.save(projeto);
+        return converterParaDTO(salvo);
     }
 
-    // Buscar por ID
-    public Optional<Projeto> buscarProjetoPorId(Long id) {
-        return projetoRepository.findById(id);
-    }
-
-    // Atualizar
-    public Projeto atualizarProjeto(Long id, Projeto detalhesProjeto) {
+    public ProjetoDTO atualizar(Long id, ProjetoDTO dto) {
         Projeto projeto = projetoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Projeto não encontrado com id: " + id));
+                .orElseThrow(() -> new RuntimeException("Projeto não encontrado com ID: " + id));
 
-        projeto.setTitulo(detalhesProjeto.getTitulo());
-        projeto.setDescricao(detalhesProjeto.getDescricao());
-        projeto.setProgresso(detalhesProjeto.getProgresso());
+        projeto.setTitulo(dto.titulo());
+        projeto.setDescricao(dto.descricao());
+        // Se o front mandar progresso, usa. Se não, mantém o cálculo automático.
+        if (dto.progresso() != null) {
+             projeto.setProgresso(dto.progresso());
+        }
+        
+        if (dto.usuarioId() != null) {
+             Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+            projeto.setUsuario(usuario);
+        }
 
-        return projetoRepository.save(projeto);
+        Projeto atualizado = projetoRepository.save(projeto);
+        return converterParaDTO(atualizado);
     }
 
-    // Deletar
-    public void deletarProjeto(Long id) {
-        Projeto projeto = projetoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Projeto não encontrado com id: " + id));
-        projetoRepository.delete(projeto);
+    public void deletar(Long id) {
+        if (!projetoRepository.existsById(id)) {
+            throw new RuntimeException("Projeto não encontrado para deleção.");
+        }
+        projetoRepository.deleteById(id);
     }
 
+    // --- MÉTODO DE CÁLCULO ---
     public void recalcularProgresso(Long projetoId) {
         Projeto projeto = projetoRepository.findById(projetoId)
-            .orElseThrow(() -> new RuntimeException("Projeto não encontrado com id: " + projetoId));
+                .orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
 
-        // Busca todas as tarefas associadas a este projeto
+        // Agora essa linha vai funcionar porque declaramos a variável lá em cima!
         List<Tarefa> tarefas = tarefaRepository.findByProjetoId(projetoId);
 
-        // Calcula a soma total da 'quantidadeFeita'
-        int progressoCalculado = tarefas.stream()
-            .mapToInt(Tarefa::getQuantidadeFeita)
-            .sum();
+        if (tarefas.isEmpty()) {
+            projeto.setProgresso(0);
+        } else {
+            long totalTarefas = tarefas.size();
+            
+            // Verifique se no seu Model Tarefa o método é .getConcluida() ou .isConcluida()
+            long concluidas = tarefas.stream()
+                    .filter(tarefa -> Boolean.TRUE.equals(tarefa.getConcluida())) 
+                    .count();
 
-        // Atualiza o campo 'progresso'
-        projeto.setProgresso(progressoCalculado);
+            int novaPorcentagem = (int) ((concluidas * 100) / totalTarefas);
+            projeto.setProgresso(novaPorcentagem);
+        }
+
         projetoRepository.save(projeto);
+    }
+
+    private ProjetoDTO converterParaDTO(Projeto projeto) {
+        Long usuarioId = (projeto.getUsuario() != null) ? projeto.getUsuario().getId() : null;
+        
+        return new ProjetoDTO(
+                projeto.getId(),
+                projeto.getTitulo(),
+                projeto.getDescricao(),
+                projeto.getProgresso(),
+                usuarioId
+        );
     }
 }

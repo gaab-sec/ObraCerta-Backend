@@ -42,4 +42,10 @@ public class Tarefa {
     public void setQuantidadeFeita(int quantidadeFeita) { this.quantidadeFeita = quantidadeFeita; }
     public Prioridade getPrioridade() { return prioridade; }
     public void setPrioridade(Prioridade prioridade) { this.prioridade = prioridade; }
+
+    private Boolean concluida; // ou private boolean concluida;
+
+    public Boolean getConcluida() {
+        return concluida;
+    }
 }

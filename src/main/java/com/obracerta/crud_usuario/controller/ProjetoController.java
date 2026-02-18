@@ -1,8 +1,7 @@
 package com.obracerta.crud_usuario.controller;
 
-import com.obracerta.crud_usuario.model.Projeto;
-import com.obracerta.crud_usuario.service.ProjetoService;
-
+import com.obracerta.crud_usuario.dto.ProjetoDTO; // Você vai precisar criar esse DTO se não tiver
+import com.obracerta.crud_usuario.service.ProjetoService; // E esse Service
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,52 +9,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/projetos")
-@CrossOrigin(origins = "*") 
+@RequestMapping("/api/projetos") // <--- O Front-end está procurando EXATAMENTE este endereço
 public class ProjetoController {
 
     @Autowired
     private ProjetoService projetoService;
 
-    // Endpoint para criar
-    @PostMapping
-    public Projeto criarProjeto(@RequestBody Projeto projeto) {
-        return projetoService.criarProjeto(projeto);
-    }
-
-    // Endpoint para listar td
+    // 1. LISTAR TODOS (GET)
     @GetMapping
-    public List<Projeto> listarTodosProjetos() {
-        return projetoService.listarTodosProjetos();
+    public ResponseEntity<List<ProjetoDTO>> listarTodos() {
+        // Lógica para buscar no banco
+        List<ProjetoDTO> projetos = projetoService.listarTodos();
+        return ResponseEntity.ok(projetos);
     }
 
-    // Endpoint buscar p/ id
-    @GetMapping("/{id}")
-    public ResponseEntity<Projeto> buscarProjetoPorId(@PathVariable Long id) {
-        return projetoService.buscarProjetoPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    // 2. CRIAR NOVO (POST)
+    @PostMapping
+    public ResponseEntity<ProjetoDTO> criar(@RequestBody ProjetoDTO dados) {
+        ProjetoDTO novoProjeto = projetoService.criar(dados);
+        return ResponseEntity.ok(novoProjeto);
     }
 
-    // Endpoint para att
+    // 3. ATUALIZAR (PUT)
     @PutMapping("/{id}")
-    public ResponseEntity<Projeto> atualizarProjeto(@PathVariable Long id, @RequestBody Projeto detalhesProjeto) {
-        try {
-            Projeto projetoAtualizado = projetoService.atualizarProjeto(id, detalhesProjeto);
-            return ResponseEntity.ok(projetoAtualizado);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ProjetoDTO> atualizar(@PathVariable Long id, @RequestBody ProjetoDTO dados) {
+        ProjetoDTO projetoAtualizado = projetoService.atualizar(id, dados);
+        return ResponseEntity.ok(projetoAtualizado);
     }
 
-    // Endpoint para deletar
+    // 4. DELETAR (DELETE)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarProjeto(@PathVariable Long id) {
-        try {
-            projetoService.deletarProjeto(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        projetoService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

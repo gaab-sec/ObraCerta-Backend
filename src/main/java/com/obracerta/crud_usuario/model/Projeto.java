@@ -1,11 +1,9 @@
 package com.obracerta.crud_usuario.model;
 
-import jakarta.persistence.*;
-import java.util.List; 
-import com.fasterxml.jackson.annotation.JsonManagedReference; 
+import jakarta.persistence.*; // Se der erro aqui, tente 'javax.persistence.*'
 
 @Entity
-@Table(name = "projetos")
+@Table(name = "projetos") // Nome da tabela no banco
 public class Projeto {
 
     @Id
@@ -15,19 +13,29 @@ public class Projeto {
     @Column(nullable = false)
     private String titulo;
 
-    @Column(length = 1000) 
+    @Column(length = 1000) // Permite descrições longas
     private String descricao;
 
-    private Integer progresso;
+    private Integer progresso = 0; // Começa com 0%
 
-    @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Tarefa> tarefas;
+    // RELACIONAMENTO: Muitos Projetos pertencem a Um Usuário
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
+    // --- CONSTRUTORES ---
     public Projeto() {
     }
 
-    // Getters e Setters
+    public Projeto(String titulo, String descricao, Integer progresso, Usuario usuario) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.progresso = progresso;
+        this.usuario = usuario;
+    }
+
+    // --- GETTERS E SETTERS ---
+
     public Long getId() {
         return id;
     }
@@ -60,6 +68,11 @@ public class Projeto {
         this.progresso = progresso;
     }
 
-    public List<Tarefa> getTarefas() { return tarefas; }
-    public void setTarefas(List<Tarefa> tarefas) { this.tarefas = tarefas; }
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }
