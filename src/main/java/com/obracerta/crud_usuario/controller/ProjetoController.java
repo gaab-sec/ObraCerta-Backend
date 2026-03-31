@@ -1,43 +1,47 @@
 package com.obracerta.crud_usuario.controller;
-
-import com.obracerta.crud_usuario.dto.ProjetoDTO; // Você vai precisar criar esse DTO se não tiver
-import com.obracerta.crud_usuario.service.ProjetoService; // E esse Service
+ 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
+import com.obracerta.crud_usuario.dto.ProjetoDTO;
+import com.obracerta.crud_usuario.service.ProjetoService;
+ 
 @RestController
-@RequestMapping("/api/projetos") // <--- O Front-end está procurando EXATAMENTE este endereço
+@RequestMapping("/api/projetos")
 public class ProjetoController {
-
+ 
     @Autowired
     private ProjetoService projetoService;
-
-    // 1. LISTAR TODOS (GET)
-    @GetMapping
-    public ResponseEntity<List<ProjetoDTO>> listarTodos() {
-        // Lógica para buscar no banco
-        List<ProjetoDTO> projetos = projetoService.listarTodos();
-        return ResponseEntity.ok(projetos);
+ 
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<ProjetoDTO>> listarPorUsuario(@PathVariable Long usuarioId) {
+        return ResponseEntity.ok(projetoService.listarPorUsuario(usuarioId));
     }
-
-    // 2. CRIAR NOVO (POST)
+ 
+    @GetMapping
+    public ResponseEntity<Object> listarTodos() {
+        return ResponseEntity.ok(projetoService.listarTodos());
+    }
+ 
     @PostMapping
     public ResponseEntity<ProjetoDTO> criar(@RequestBody ProjetoDTO dados) {
-        ProjetoDTO novoProjeto = projetoService.criar(dados);
-        return ResponseEntity.ok(novoProjeto);
+        return ResponseEntity.ok(projetoService.criar(dados));
     }
-
-    // 3. ATUALIZAR (PUT)
+ 
     @PutMapping("/{id}")
     public ResponseEntity<ProjetoDTO> atualizar(@PathVariable Long id, @RequestBody ProjetoDTO dados) {
-        ProjetoDTO projetoAtualizado = projetoService.atualizar(id, dados);
-        return ResponseEntity.ok(projetoAtualizado);
+        return ResponseEntity.ok(projetoService.atualizar(id, dados));
     }
-
-    // 4. DELETAR (DELETE)
+ 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         projetoService.deletar(id);
